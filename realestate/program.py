@@ -57,9 +57,9 @@ def query_data(data):
 
 
     # average price house
-    #prices = []
-    #for pur in data:
-        #prices.append(pur.price)
+    # prices = []
+    # for pur in data:
+        # prices.append(pur.price)
     
     prices = [
         p.price
@@ -67,15 +67,27 @@ def query_data(data):
     ]
     ave_price = statistics.mean(prices)
     print('The average price is ${:,.2f}'.format(ave_price))
-    
-    
+
     # average price 2 bedroom houses
-    two_bed_homes = [p for p in data if p.beds == 2]
-    ave_price = statistics.mean([p.price for p in two_bed_homes])
-    ave_baths = statistics.mean([p.baths for p in two_bed_homes])
-    ave_sq_ft = statistics.mean([p.sq__ft for p in two_bed_homes])
+    two_bed_homes = (p for p in data if p.beds == 2)
+
+    homes = []
+    for h in two_bed_homes:
+        if len(homes) > 5:
+            break
+        homes.append(h)
+
+    ave_price = statistics.mean((announce(p.price, 'price') for p in homes))
+    ave_baths = statistics.mean((p.baths for p in homes))
+    ave_sq_ft = statistics.mean((p.sq__ft for p in homes))
     print('The average price (2 bedroom) is ${:,.2f} // baths: {} // sq ft: {}'
     .format(ave_price, round(ave_baths, 1), round(ave_sq_ft, 1)))
+
+
+def announce(item, msg):
+    print("Pulling item {} for {}".format(item, msg))
+    return item
+
 
 if __name__ == '__main__':
     main()
